@@ -14,7 +14,7 @@ function RootComponent() {
   return (
     <Suspense>
       <Toaster />
-      <div className='flex flex-col min-h-screen pb-20'>
+      <div className='flex flex-col min-h-screen bg-background'>
         {isAuthenticated && <Header />}
         <Outlet />
       </div>

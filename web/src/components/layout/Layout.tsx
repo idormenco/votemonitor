@@ -26,20 +26,22 @@ const Layout = ({
 }: LayoutProps): FunctionComponent => {
   return (
     <>
-      <header className='container py-4'>
-        <div className='flex flex-col gap-1 text-gray-400'>
+      <header className='container py-6 border-b border-border/50'>
+        <div className='flex flex-col gap-2'>
           {enableBreadcrumbs && (breadcrumbs || <Breadcrumbs />)}
-          <h1 className='flex flex-row items-center gap-3 text-3xl font-bold tracking-tight text-gray-900'>
-            {enableBreadcrumbs && (backButton || <BackButton />)}
-            {enableBackButton && (backButton || <BackButton />)}
-            {title}
-          </h1>
-          {subtitle ?? <h3 className='text-lg font-light'>{subtitle}</h3>}
-
-          {!!actions && <div className='flex shrink-0'>{actions}</div>}
+          <div className='flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between'>
+            <div className='flex items-center gap-3'>
+              {(enableBreadcrumbs || enableBackButton) && (backButton || <BackButton />)}
+              <h1 className='text-2xl font-bold tracking-tight text-foreground'>
+                {title}
+              </h1>
+            </div>
+            {!!actions && <div className='flex gap-2 mt-3 sm:mt-0'>{actions}</div>}
+          </div>
+          {subtitle && <p className='text-sm text-muted-foreground'>{subtitle}</p>}
         </div>
       </header>
-      <main className='container flex flex-col flex-1'>{children}</main>
+      <main className='container py-6 flex flex-col flex-1'>{children}</main>
     </>
   );
 };

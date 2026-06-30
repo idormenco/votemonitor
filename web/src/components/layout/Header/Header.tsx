@@ -124,16 +124,17 @@ const Header = (): FunctionComponent => {
   }, [electionRounds]);
 
   return (
-    <Disclosure as='nav' className='mb-10 bg-white shadow-sm'>
+    <Disclosure as='nav' className='border-b border-border/50 bg-background sticky top-0 z-50'>
       {({ open }) => (
         <>
           <div className='container'>
-            <div className='flex items-center justify-between h-16 gap-6 md:gap-10'>
-              <Link to='/'>
-                <Logo width={48} height={48} />
+            <div className='flex items-center justify-between h-14 gap-4 md:gap-6'>
+              <Link to='/' className='flex items-center gap-2 shrink-0'>
+                <Logo width={40} height={40} />
+                <span className='hidden sm:block text-sm font-semibold text-foreground'>VoteMonitor</span>
               </Link>
 
-              <div className='items-baseline flex-1 hidden gap-4 md:flex'>
+              <div className='items-center flex-1 hidden gap-1 md:flex'>
                 {navigation
                   .filter((nav) => nav.roles.includes(userRole ?? 'Unknown'))
                   .map((item) => (
@@ -142,34 +143,34 @@ const Header = (): FunctionComponent => {
                       search={{}}
                       params={{}}
                       key={item.name}
-                      className='px-3 py-2 text-sm font-medium rounded-md'
+                      className='px-3 py-1.5 text-sm font-medium rounded-md transition-colors'
                       activeProps={{
-                        className: 'bg-primary-100 text-primary-600 cursor-default',
+                        className: 'bg-accent text-accent-foreground',
                         'aria-current': 'page',
                       }}
                       inactiveProps={{
                         className:
-                          'hover:text-primary-600 hover:bg-secondary-300 focus:text-primary-600 focus:bg-secondary-300',
+                          'text-muted-foreground hover:text-foreground hover:bg-secondary',
                       }}>
                       {item.name}
                     </Link>
                   ))}
               </div>
 
-              <div className='items-center hidden gap-2 md:flex'>
+              <div className='items-center hidden gap-3 md:flex'>
                 {userRole !== 'NgoAdmin' ? (
                   <></>
                 ) : status === 'pending' ? (
-                  <Skeleton className='w-[360px] h-[26px] mr-2 rounded-lg bg-secondary-300 text-secondary-900 hover:bg-secondary-300/90' />
+                  <Skeleton className='w-48 h-8 rounded-md' />
                 ) : (
                   <DropdownMenu>
                     <DropdownMenuTrigger>
-                      <Badge className='max-w-[360px] bg-secondary-300 text-secondary-900 hover:bg-secondary-300/90'>
-                        <div className='flex items-center justify-between gap-2 w-full'>
-                          <div className='truncate max-w-[300px]' title={selectedElectionRound?.title}>
+                      <Badge className='max-w-xs bg-secondary text-secondary-foreground hover:bg-secondary/80 truncate cursor-pointer'>
+                        <div className='flex items-center gap-2 w-full'>
+                          <div className='truncate' title={selectedElectionRound?.title}>
                             {selectedElectionRound?.title}
                           </div>
-                          <ChevronDownIcon className='w-[20px] ml-2' />
+                          <ChevronDownIcon className='w-4 h-4 shrink-0' />
                         </div>
                       </Badge>
                     </DropdownMenuTrigger>
@@ -216,10 +217,9 @@ const Header = (): FunctionComponent => {
                 )}
                 <Menu as='div' className='relative'>
                   <div>
-                    <Menu.Button className='relative flex text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
-                      <span className='absolute -inset-1.5' />
+                    <Menu.Button className='relative flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors hover:bg-secondary p-1.5'>
                       <span className='sr-only'>Open user menu</span>
-                      <UserCircleIcon className='w-8 h-8 fill-gray-400' />
+                      <UserCircleIcon className='w-6 h-6 fill-muted-foreground' />
                     </Menu.Button>
                   </div>
                   <Transition
@@ -230,14 +230,14 @@ const Header = (): FunctionComponent => {
                     leave='transition ease-in duration-75'
                     leaveFrom='transform opacity-100 scale-100'
                     leaveTo='transform opacity-0 scale-95'>
-                    <Menu.Items className='absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                    <Menu.Items className='absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-card rounded-md shadow-md border border-border focus:outline-none'>
                       {userNavigation.map((item) => (
                         <Menu.Item key={item.name}>
                           <Link
                             to={item.to}
                             search={{}}
                             params={{}}
-                            className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100'>
+                            className='block px-4 py-2 text-sm text-foreground hover:bg-secondary focus:bg-secondary'>
                             {item.name}
                           </Link>
                         </Menu.Item>
@@ -250,7 +250,9 @@ const Header = (): FunctionComponent => {
                       <Menu.Item key='sign-out'>
                         <Button
                           type='button'
-                          variant='link'
+                          variant='ghost'
+                          size='sm'
+                          className='w-full justify-start px-4 text-sm text-foreground hover:bg-secondary'
                           onClick={() => {
                             signOut();
                             navigate({ to: '/login' });
@@ -263,27 +265,25 @@ const Header = (): FunctionComponent => {
                 </Menu>
               </div>
 
-              <div className='flex -mr-2 md:hidden'>
-                {/* Mobile menu button */}
+              <div className='flex md:hidden'>
                 <Disclosure.Button
                   className={clsx(
-                    'relative inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:text-primary-600 hover:bg-secondary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-                    { 'bg-secondary-300': open }
+                    'relative inline-flex items-center justify-center p-2 text-muted-foreground bg-transparent rounded-md hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 transition-colors',
+                    { 'bg-secondary': open }
                   )}>
-                  <span className='absolute -inset-0.5' />
                   <span className='sr-only'>Open main menu</span>
                   {open ? (
-                    <XMarkIcon className='block w-6 h-6' aria-hidden='true' />
+                    <XMarkIcon className='block w-5 h-5' aria-hidden='true' />
                   ) : (
-                    <Bars3Icon className='block w-6 h-6' aria-hidden='true' />
+                    <Bars3Icon className='block w-5 h-5' aria-hidden='true' />
                   )}
                 </Disclosure.Button>
               </div>
             </div>
           </div>
 
-          <Disclosure.Panel className='md:hidden'>
-            <div className='px-2 pt-2 pb-3 space-y-1 sm:px-3'>
+          <Disclosure.Panel className='md:hidden border-t border-border'>
+            <div className='px-2 py-2 space-y-1'>
               {navigation
                 .filter((nav) => nav.roles.includes(userRole ?? 'Unknown'))
                 .map((item) => (
@@ -291,103 +291,88 @@ const Header = (): FunctionComponent => {
                     key={item.name}
                     as={Link}
                     to={item.to}
-                    className='block px-3 py-2 text-base font-medium rounded-md'
+                    className='block px-3 py-2 text-sm font-medium rounded-md'
                     activeProps={{
-                      className: 'bg-primary-100 text-primary-600 cursor-default',
+                      className: 'bg-accent text-accent-foreground',
                       'aria-current': 'page',
                     }}
                     inactiveProps={{
                       className:
-                        'hover:text-primary-600 hover:bg-secondary-300 focus:text-primary-600 focus:bg-secondary-300',
+                        'text-muted-foreground hover:text-foreground hover:bg-secondary',
                     }}>
                     {item.name}
                   </Disclosure.Button>
                 ))}
             </div>
-            <div className='pt-4 pb-3 border-t border-gray-700'>
-              <div className='flex items-center px-5'>
-                <div className='flex-shrink-0'>
-                  <UserCircleIcon className='w-10 h-10 fill-gray-400' />
-                </div>
-                <div className='ml-3'>
-                  <div className='text-base font-medium leading-none text-gray-800'>{selectedElectionRound?.title}</div>
-                </div>
-              </div>
-              <div className='px-2 mt-3 space-y-1'>
-                {userNavigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as={Link}
-                    to={item.to}
-                    className='block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800'>
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
-                {userRole !== 'NgoAdmin' ? (
-                  <></>
-                ) : status === 'pending' ? (
-                  <Skeleton className='w-[360px] h-[26px] mr-2 rounded-lg bg-secondary-300 text-secondary-900 hover:bg-secondary-300/90' />
-                ) : (
-                  <div className='px-4 py-2 space-y-2 '>
-                    <Label>Elecction rounds</Label>
-                    <Select
-                      defaultValue={selectedElectionRound?.id ?? ''}
-                      onValueChange={(value) => {
-                        const electionRound = electionRounds?.find((er) => er.id === value);
-                        handleSelectElectionRound(electionRound);
-                      }}>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select language' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Active & Upcomming elections</SelectLabel>
-                          {activeElections?.map((electionRound) => (
-                            <SelectItem key={electionRound.id} value={electionRound.id}>
-                              <div className='flex items-center gap-2'>
-                                {electionRound?.status === ElectionRoundStatus.NotStarted ? (
-                                  <PauseCircleIcon className='w-4 h-4 text-slate-700' />
-                                ) : null}
-                                {electionRound?.status === ElectionRoundStatus.Started ? (
-                                  <PlayCircleIcon className='w-4 h-4 text-green-700' />
-                                ) : null}
-                                <div className='truncate max-w-[340px]' title={electionRound.title}>
-                                  {electionRound.title}
-                                </div>
-                              </div>
-                            </SelectItem>
-                          ))}
-                          <SelectSeparator />
-                          <SelectLabel>Archived elections</SelectLabel>
-                          {archivedElections?.map((electionRound) => (
-                            <SelectItem key={electionRound.id} value={electionRound.id}>
-                              <div className='flex items-center gap-2'>
-                                <StopCircleIcon className='w-4 h-4 text-yellow-700' />
-
-                                <div className='truncate max-w-[340px]' title={electionRound.title}>
-                                  {electionRound.title}
-                                </div>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-                <LanguageSelector />
+            <div className='py-3 border-t border-border space-y-2 px-2'>
+              {userNavigation.map((item) => (
                 <Disclosure.Button
-                  key='Sign Out'
-                  as={Button}
-                  onClick={() => {
-                    signOut();
-                    navigate({ to: '/login' });
-                  }}
-                  variant='link'
-                  className='block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800'>
-                  Sign Out
+                  key={item.name}
+                  as={Link}
+                  to={item.to}
+                  className='block px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary rounded-md'>
+                  {item.name}
                 </Disclosure.Button>
-              </div>
+              ))}
+              {userRole !== 'NgoAdmin' ? (
+                <></>
+              ) : status === 'pending' ? (
+                <Skeleton className='w-full h-8 rounded-md' />
+              ) : (
+                <div className='px-3 py-2 space-y-2'>
+                  <Label className='text-xs font-semibold'>Election Rounds</Label>
+                  <Select
+                    defaultValue={selectedElectionRound?.id ?? ''}
+                    onValueChange={(value) => {
+                      const electionRound = electionRounds?.find((er) => er.id === value);
+                      handleSelectElectionRound(electionRound);
+                    }}>
+                    <SelectTrigger className='w-full text-sm'>
+                      <SelectValue placeholder='Select round' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Active & Upcoming</SelectLabel>
+                        {activeElections?.map((electionRound) => (
+                          <SelectItem key={electionRound.id} value={electionRound.id}>
+                            <div className='flex items-center gap-2'>
+                              {electionRound?.status === ElectionRoundStatus.NotStarted ? (
+                                <PauseCircleIcon className='w-3 h-3' />
+                              ) : null}
+                              {electionRound?.status === ElectionRoundStatus.Started ? (
+                                <PlayCircleIcon className='w-3 h-3' />
+                              ) : null}
+                              <span className='truncate'>{electionRound.title}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                        <SelectSeparator />
+                        <SelectLabel>Archived</SelectLabel>
+                        {archivedElections?.map((electionRound) => (
+                          <SelectItem key={electionRound.id} value={electionRound.id}>
+                            <div className='flex items-center gap-2'>
+                              <StopCircleIcon className='w-3 h-3' />
+                              <span className='truncate'>{electionRound.title}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+              <LanguageSelector />
+              <Disclosure.Button
+                key='Sign Out'
+                as={Button}
+                onClick={() => {
+                  signOut();
+                  navigate({ to: '/login' });
+                }}
+                variant='ghost'
+                className='w-full justify-start px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary'>
+                Sign Out
+              </Disclosure.Button>
             </div>
           </Disclosure.Panel>
         </>

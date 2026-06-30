@@ -5,16 +5,16 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-primary text-primary-foreground',
+        default: 'border-transparent bg-primary text-primary-foreground hover:bg-primary/90',
         secondary:
-          'border border-input bg-background hover:bg-purple-50 text-purple-900 border-purple-900 hover:text-accent-foreground',
+          'border border-border bg-secondary text-secondary-foreground hover:bg-secondary/80',
         destructive: 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
         outline:
-          'border border-input bg-purple-100 hover:bg-purple-50 text-purple-900 border-purple-900 hover:text-accent-foreground',
+          'border border-input bg-background text-foreground hover:bg-secondary',
       },
     },
     defaultVariants: {
@@ -36,10 +36,10 @@ interface FilterBadgeProps {
 
 function FilterBadge({ label, onClear }: FilterBadgeProps): FunctionComponent {
   return (
-    <Badge className='bg-purple-50 text-purple-600 font-medium hover:bg-purple-100 py-2 text-sm gap-2'>
+    <Badge variant='outline' className='px-2.5 py-1.5 text-sm gap-1.5 font-normal'>
       <span>{label}</span>
-      <button title='Remove filter' onClick={onClear}>
-        <XMarkIcon className='w-4' />
+      <button title='Remove filter' onClick={onClear} className='hover:text-foreground transition-colors'>
+        <XMarkIcon className='w-3.5 h-3.5' />
       </button>
     </Badge>
   );

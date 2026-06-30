@@ -73,88 +73,105 @@ export default function QuickReportDetails(): FunctionComponent {
       backButton={<NavigateBack to='/responses' search={prevSearch} />}
       breadcrumbs={<></>}
       title={quickReport.id}>
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-3 max-w-4xl'>
+        {/* Header Card - Compact Metadata */}
         <Card>
-          <CardContent className='flex flex-col gap-4 pt-6'>
-            <div className='flex gap-2'>
-              <p>Observer:</p>
-              <Link
-                className='flex gap-1 font-bold text-purple-500'
-                to='/responses'
-                search={{ searchText: quickReport.monitoringObserverId, tab: 'quick-reports', viewBy: 'byEntry' }}
-                target='_blank'
-                preload={false}>
-                {quickReport.observerName}
-                <ArrowTopRightOnSquareIcon className='w-4' />
-              </Link>
-            </div>
-
-            <div>
-              <p className='font-bold'>Time submitted</p>
-              {quickReport.timestamp && <p>{format(quickReport.timestamp, DateTimeFormat)}</p>}
-            </div>
-
-            <div>
-              <p className='font-bold'>Location type</p>
-              <p>{mapQuickReportLocationType(quickReport.quickReportLocationType)}</p>
-            </div>
-
-            {quickReport.pollingStationDetails && (
+          <CardContent className='pt-4 pb-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3'>
               <div>
-                <p className='font-bold'>Polling station details</p>
-                <p>{quickReport.pollingStationDetails}</p>
+                <p className='text-xs font-semibold text-muted-foreground uppercase tracking-wide'>Observer</p>
+                <Link
+                  className='text-sm font-medium text-accent hover:underline flex items-center gap-1'
+                  to='/responses'
+                  search={{ searchText: quickReport.monitoringObserverId, tab: 'quick-reports', viewBy: 'byEntry' }}
+                  target='_blank'
+                  preload={false}>
+                  {quickReport.observerName}
+                  <ArrowTopRightOnSquareIcon className='w-3.5 h-3.5' />
+                </Link>
+              </div>
+
+              <div>
+                <p className='text-xs font-semibold text-muted-foreground uppercase tracking-wide'>Submitted</p>
+                <p className='text-sm'>
+                  {quickReport.timestamp && format(quickReport.timestamp, DateTimeFormat)}
+                </p>
+              </div>
+
+              <div>
+                <p className='text-xs font-semibold text-muted-foreground uppercase tracking-wide'>Location type</p>
+                <p className='text-sm'>{mapQuickReportLocationType(quickReport.quickReportLocationType)}</p>
+              </div>
+
+              <div>
+                <p className='text-xs font-semibold text-muted-foreground uppercase tracking-wide'>Category</p>
+                <p className='text-sm'>{mapIncidentCategory(quickReport.incidentCategory)}</p>
+              </div>
+            </div>
+
+            {/* Location Details - Compact Grid */}
+            {quickReport.level1 && (
+              <div className='mt-3 pt-3 border-t border-border'>
+                <p className='text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2'>Location Hierarchy</p>
+                <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-sm'>
+                  <div>
+                    <span className='text-xs text-muted-foreground'>L1:</span>
+                    <p className='font-medium'>{quickReport.level1}</p>
+                  </div>
+                  {quickReport.level2 && (
+                    <div>
+                      <span className='text-xs text-muted-foreground'>L2:</span>
+                      <p className='font-medium'>{quickReport.level2}</p>
+                    </div>
+                  )}
+                  {quickReport.level3 && (
+                    <div>
+                      <span className='text-xs text-muted-foreground'>L3:</span>
+                      <p className='font-medium'>{quickReport.level3}</p>
+                    </div>
+                  )}
+                  {quickReport.level4 && (
+                    <div>
+                      <span className='text-xs text-muted-foreground'>L4:</span>
+                      <p className='font-medium'>{quickReport.level4}</p>
+                    </div>
+                  )}
+                  {quickReport.level5 && (
+                    <div>
+                      <span className='text-xs text-muted-foreground'>L5:</span>
+                      <p className='font-medium'>{quickReport.level5}</p>
+                    </div>
+                  )}
+                  {quickReport.number && (
+                    <div>
+                      <span className='text-xs text-muted-foreground'>No.:</span>
+                      <p className='font-medium'>{quickReport.number}</p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
-            {quickReport.level1 && (
-              <div className='flex gap-4'>
-                <div>
-                  <p className='font-bold'>Location - L1</p>
-                  {quickReport.level1}
-                </div>
-                {quickReport.level2 && (
-                  <div>
-                    <p className='font-bold'>Location - L2</p>
-                    {quickReport.level2}
-                  </div>
-                )}
-                {quickReport.level3 && (
-                  <div>
-                    <p className='font-bold'>Location - L3</p>
-                    {quickReport.level3}
-                  </div>
-                )}
-                {quickReport.level4 && (
-                  <div>
-                    <p className='font-bold'>Location - L4</p>
-                    {quickReport.level4}
-                  </div>
-                )}
-                {quickReport.level5 && (
-                  <div>
-                    <p className='font-bold'>Location - L5</p>
-                    {quickReport.level5}
-                  </div>
-                )}
-                <div>
-                  <p className='font-bold'>Number</p>
-                  <p>{quickReport.number}</p>
-                </div>
+            {quickReport.pollingStationDetails && (
+              <div className='mt-2'>
+                <p className='text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1'>Station Details</p>
+                <p className='text-sm'>{quickReport.pollingStationDetails}</p>
               </div>
             )}
           </CardContent>
         </Card>
 
+        {/* Report Content Card */}
         <Card>
-          <CardHeader>
-            <CardTitle className='flex justify-between mb-4'>
-              <div>Quick report</div>
+          <CardHeader className='pb-3'>
+            <div className='flex items-center justify-between gap-3'>
+              <CardTitle className='text-lg'>Report Details</CardTitle>
               <Select
                 onValueChange={handleFollowUpStatusChange}
                 defaultValue={quickReport.followUpStatus}
                 value={quickReport.followUpStatus}
                 disabled={!quickReport.isOwnObserver || electionRound?.status === ElectionRoundStatus.Archived}>
-                <SelectTrigger className='w-[180px]'>
+                <SelectTrigger className='w-48'>
                   <SelectValue placeholder='Follow-up status' />
                 </SelectTrigger>
                 <SelectContent>
@@ -175,36 +192,33 @@ export default function QuickReportDetails(): FunctionComponent {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </CardTitle>
+            </div>
             <Separator />
           </CardHeader>
 
-          <CardContent className='text-[#374151] flex flex-col gap-6'>
+          <CardContent className='flex flex-col gap-3'>
             <div>
-              <p className='font-bold'>Incident category</p>
-              <p>{mapIncidentCategory(quickReport.incidentCategory)}</p>
+              <p className='text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1'>Issue Title</p>
+              <p className='text-sm font-medium'>{quickReport.title}</p>
             </div>
 
             <div>
-              <p className='font-bold'>Issue title</p>
-              <p>{quickReport.title}</p>
-            </div>
-
-            <div>
-              <p className='font-bold'>Description</p>
-              <p>{quickReport.description}</p>
+              <p className='text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1'>Description</p>
+              <p className='text-sm whitespace-pre-wrap'>{quickReport.description}</p>
             </div>
 
             {!!quickReport.attachments && quickReport.attachments.length > 0 && (
-              <ResponseExtraDataSection
-                attachments={quickReport.attachments.map((a) => ({
-                  ...a,
-                  timeSubmitted: quickReport.timestamp,
-                }))}
-                notes={[]}
-                aggregateDisplay={false}
-                submissionType={SubmissionType.QuickReport}
-              />
+              <div className='mt-1'>
+                <ResponseExtraDataSection
+                  attachments={quickReport.attachments.map((a) => ({
+                    ...a,
+                    timeSubmitted: quickReport.timestamp,
+                  }))}
+                  notes={[]}
+                  aggregateDisplay={false}
+                  submissionType={SubmissionType.QuickReport}
+                />
+              </div>
             )}
           </CardContent>
         </Card>
