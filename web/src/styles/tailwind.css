@@ -4,64 +4,75 @@
 
 @layer base {
   :root {
+    /* Primary - Modern slate/navy */
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    /* Background & Text */
     --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    --foreground: 222.2 47.4% 11.2%;
 
+    /* Card */
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card-foreground: 222.2 47.4% 11.2%;
 
+    /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
+    --popover-foreground: 222.2 47.4% 11.2%;
 
-    --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
+    /* Secondary - Neutral light gray */
+    --secondary: 220 13% 91%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
+    /* Muted - Softer neutrals */
+    --muted: 220 13% 91%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    /* Accent - Vibrant blue */
+    --accent: 217.2 91.2% 59.8%;
+    --accent-foreground: 210 40% 98%;
 
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
-
+    /* Destructive */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive-foreground: 210 40% 98%;
 
+    /* Border & Input */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
 
+    /* Ring */
+    --ring: 217.2 91.2% 59.8%;
+
+    /* Radius */
     --radius: 0.5rem;
   }
 }
 
+/* Status badges with better colors */
 .badge-Active {
-  background-color: #f2fdf5;
-  color: #147638;
+  @apply bg-emerald-50 text-emerald-700;
 }
 
 .badge-Pending {
-  background-color: #fffbeb;
-  color: #a96e09;
+  @apply bg-amber-50 text-amber-700;
 }
 
 .badge-Suspended {
-  background-color: #f3f4f6;
-  color: #374151;
+  @apply bg-slate-100 text-slate-700;
+}
+
+/* Breadcrumbs */
+.breadcrumbs .crumb {
+  @apply text-slate-600 font-medium;
 }
 
 .breadcrumbs .crumb:after {
-  content: '>';
-  margin-left: 0.5rem;
-}
-
-.breadcrumbs .crumb {
-  color: #7833b3;
+  content: '/';
+  @apply mx-2 text-slate-400;
 }
 
 .breadcrumbs .crumb:last-child {
-  color: #71717a;
+  @apply text-slate-900 font-semibold;
 }
 
 .breadcrumbs .crumb:last-child:after {
